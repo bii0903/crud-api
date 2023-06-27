@@ -1,7 +1,14 @@
 const Todo = require("../Model/Todo");
 const getTodos = (req, res) => {
-  res.send("I am the get todos route");
+  Todo.find({})
+    .then((todos) => {
+      res.json(todos);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
 };
+
 
 const createTodo = (req, res) => {
   const todo = new Todo({
@@ -18,7 +25,30 @@ const createTodo = (req, res) => {
   });
 };
 
+const updateTodo = function(req, res) {
+  Todo.findOneAndUpdate({ _id: req.params.todoID }, { $set: { 
+    title: req.body.title,
+    description: req.body.description,
+    completed: req.body.completed
+  }}, { new: true })
+    .then((updatedTodo) => {
+      res.json(updatedTodo);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+};
+
+const deleteTodo = (req, res) => {
+  Todo.deleteOne({ _id: req.params.todoID })
+    .then(() => res.json({ message: "Todo Deleted" }))
+    .catch((err) => res.send(err));
+};
+
+
 module.exports = {
   getTodos,
   createTodo,
+  updateTodo,
+  deleteTodo,
 };

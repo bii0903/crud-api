@@ -1,5 +1,12 @@
 const router = require("express").Router();
-const { getTodos, createTodo } = require("./controllers/Todo");
+const {
+  getTodos,
+  createTodo,
+  updateTodo,
+  deleteTodo,
+} = require("./controllers/Todo");
+
+
 
 
 router.get("/", (req, res) => {
@@ -8,6 +15,9 @@ router.get("/", (req, res) => {
 
 router.get("/todos", getTodos);
 router.post("/todos", createTodo);
+router.put("/todos/:todoID",updateTodo);
+router.delete("/todos/:todoID", deleteTodo);
+
 
 
 module.exports = router;
